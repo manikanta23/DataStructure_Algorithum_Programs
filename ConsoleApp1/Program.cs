@@ -12,7 +12,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            String_Anagrams();
+            String_Anagrams(); 
 
             //int a = Convert.ToInt32(Console.ReadLine());
 
@@ -101,6 +101,81 @@ namespace ConsoleApp1
             // Console.WriteLine("The a value is positive: " + checkPositiveNumber(a));
             Console.ReadLine();
         }
+        static void Quadruples_XOR()
+        {
+            int n = Convert.ToInt32(Console.ReadLine());
+            while (n > 0)
+            {
+                int size = Convert.ToInt32(Console.ReadLine());
+                int[] a = Array.ConvertAll(Console.ReadLine().Trim().Split(' '), int.Parse);
+                int[] b = Array.ConvertAll(Console.ReadLine().Trim().Split(' '), int.Parse);
+                int[] c = Array.ConvertAll(Console.ReadLine().Trim().Split(' '), int.Parse);
+                int[] d = Array.ConvertAll(Console.ReadLine().Trim().Split(' '), int.Parse);
+                Quadruples_XOR_Result(a, b, c, d, size);
+
+                n--;
+            }
+        }
+
+        static void Quadruples_XOR_Result(int[] a, int[] b, int[] c, int[] d, int n)
+        {
+
+
+            int cnt = 0, x = 0;                //Here x is the final result 'a^b^c^d = x' We are computing it as 'a^b = x^c^d'
+            List<int> lst1 = new List<int>();
+            List<int> lst2 = new List<int>();
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    lst1.Add(a[i] ^ b[j]);
+                    lst2.Add(x ^ c[i] ^ d[j]);
+                }
+            }
+
+            lst1.Sort();
+
+            for (int k = 0; k < lst2.Count; k++)
+            {
+                cnt += lst1.FindAll(item => item == lst2[k]).Count;
+            }
+
+            Console.WriteLine(cnt);
+
+        }
+
+
+        static void ApowerB()
+        {
+            int NumberOfLines = Convert.ToInt32(Console.ReadLine());
+            while (NumberOfLines > 0)
+            {
+                int n = Convert.ToInt32(Console.ReadLine());
+                ApowerBResult(n);
+                NumberOfLines--;
+            }
+        }
+        static void ApowerBResult(int n)
+        {
+            double z = Math.Sqrt(n);
+            for (int i = 2; i <= z; i++)
+            {
+                int x = i;
+                while (x <= n)
+                {
+                    x *= i;
+                    if (x == n)
+                    {
+                        Console.WriteLine("Yes"); return;
+                    }
+
+                }
+            }
+
+            Console.WriteLine("No");
+
+        }
         static void String_Anagrams()
         {
             int NumberOfLines = Convert.ToInt32(Console.ReadLine());
@@ -120,20 +195,20 @@ namespace ConsoleApp1
             }
             int[] cnt = new int[26];
 
-            foreach(char c in s1)
+            foreach (char c in s1)
                 cnt[c - 97]++;
 
             foreach (char c in s2)
                 cnt[c - 97]--;
 
-            for(int i=0; i<cnt.Length;i++)
+            for (int i = 0; i < cnt.Length; i++)
             {
                 if (cnt[i] != 0)
                 {
                     Console.WriteLine("False");
                     return;
                 }
-                    
+
             }
             Console.WriteLine("True");
 
@@ -229,6 +304,7 @@ namespace ConsoleApp1
 
             return countVowels(str, n - 1) + isVowel(str[n - 1].ToString().ToUpper());
         }
+
         public static int isVowel(string ch)
         {
             
@@ -249,6 +325,7 @@ namespace ConsoleApp1
 
             }
         }
+
         static char FirstRepeatingChar(string str)
         {
             int[] cnt = new int[26];
@@ -309,86 +386,84 @@ namespace ConsoleApp1
 
         public static void Distinctelements_Window()
         {
-            var n = Convert.ToInt32(Console.ReadLine());
-            var arr_result = new int[n][];
-
-            for (int i = 0; i < n; i++)
+            int numberOfLines = Convert.ToInt32(Console.ReadLine());
+            while (numberOfLines > 0)
             {
-                var ar_temp = new string[2];
-                ar_temp = Console.ReadLine().Trim().Split(' ');
-
-                var ar_data = new string[Convert.ToInt32(ar_temp[0])];
-                ar_data = Console.ReadLine().Trim().Split(' ');
-                arr_result[i] = CountDistinct(Array.ConvertAll(ar_data, int.Parse), Convert.ToInt32(ar_temp[1]),
-                                              Convert.ToInt32(ar_temp[0]));
+                int[] arraySizeKElement = Array.ConvertAll(Console.ReadLine().Trim().Split(' '), int.Parse);
+                int[] arrayElements = Array.ConvertAll(Console.ReadLine().Trim().Split(' '), int.Parse);
+                Distinctelements_Window_Result(arrayElements, arraySizeKElement[0], arraySizeKElement[1]);
+                numberOfLines--;
             }
-
-            for (var i = 0; i < n; i++)
-            {
-                Console.WriteLine(string.Join(" ", arr_result[i]));
-            }
-
         }
 
-        static int[] CountDistinct(int[] arr, int k, int n)
+        public static void Distinctelements_Window_Result(int[] array, int arraySize, int window)
         {
-            var result = new List<int>();
-            var hm = new Dictionary<int, int>();
-            int distCount = 0;
+            var dicResult = new Dictionary<int, int>();
+            int distinctCount = 0;
 
-            distCount = GetDistinctCountOfFirstWindow(hm, arr, k);
-            result.Add(distCount);
-
-            // go through through the rest of the array
-            var restResult = GetDistinctCountForRest(hm, arr, k, n, distCount);
-            result.AddRange(restResult);
-            return result.ToArray();
-        }
-        static IList<int> GetDistinctCountForRest(IDictionary<int, int> hm, int[] arr, int k, int n, int count)
-        {
-            var result = new List<int>();
-            for (var i = k; i < n; i++)
+            for (int i = 0; i < window; i++)
             {
-                if (hm[arr[i - k]] == 1)
+                if (dicResult.ContainsKey(array[i]))
+                    dicResult[array[i]] += 1;
+                else
                 {
-                    count--;
-                }
-                hm[arr[i - k]] -= 1;
-
-                if (!hm.ContainsKey(arr[i]))
-                {
-                    hm.Add(arr[i], 0);
+                    dicResult.Add(array[i], 1);
+                    distinctCount++;
                 }
 
-                if (hm[arr[i]] == 0)
-                {
-                    count++;
-                }
-                hm[arr[i]] += 1;
-
-                result.Add(count);
             }
-            return result;
-        }
-        static int GetDistinctCountOfFirstWindow(IDictionary<int, int> hm, int[] arr, int k)
-        {
-            int count = 0;
-            for (var i = 0; i < k; i++)
+
+            Console.Write(distinctCount + " ");
+
+            for (int i = window; i < arraySize; i++)
             {
-                if (!hm.ContainsKey(arr[i]))
+                if (dicResult[array[i - window]] == 1)
                 {
-                    hm.Add(arr[i], 0);
+                    dicResult.Remove(array[i - window]);
+                    distinctCount--;
                 }
+                else
+                {
+                    dicResult[array[i - window]] -= 1;
+                }
+                if (dicResult.ContainsKey(array[i]))
+                    dicResult[array[i]] += 1;
+                else
+                {
+                    dicResult.Add(array[i], 1);
+                    distinctCount++;
+                }
+                Console.Write(distinctCount + " ");
 
-                if (hm[arr[i]] == 0)
-                {
-                    count++;
-                }
-                hm[arr[i]] += 1;
             }
-            return count;
+            //for(int i =0; i<= arraySize - window; i++)
+            //{
+            //    int j = i, count = 0;
+
+            //    while(count < window)
+            //    {
+            //        if (dicResult.ContainsKey(array[j]))
+            //            dicResult[array[j]] += 1;
+            //        else
+            //        {
+            //            dicResult.Add(array[j], 1);
+            //            distinctCount++;
+            //        }
+            //        count++;
+            //        j++;
+            //    }
+
+            //    dicResult = new Dictionary<int, int>();
+            //    Console.Write(distinctCount + " ");
+            //    distinctCount = 0;
+
+            //}
+
+            Console.Write("\n");
+
+
         }
-      
+
         public static void Pair_with_Difference_K()
         {
             int numberOfLines = Convert.ToInt32(Console.ReadLine());
