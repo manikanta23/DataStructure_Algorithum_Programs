@@ -12,7 +12,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            String_Anagrams(); 
+            Queue_Implementation();
 
             //int a = Convert.ToInt32(Console.ReadLine());
 
@@ -101,6 +101,71 @@ namespace ConsoleApp1
             // Console.WriteLine("The a value is positive: " + checkPositiveNumber(a));
             Console.ReadLine();
         }
+
+        public static void Queue_Implementation()
+        {
+            int n = Convert.ToInt32(Console.ReadLine());
+            Queue s = new Queue(10000);
+
+            while (n > 0)
+            {
+                string[] input = Console.ReadLine().Trim().Split(' ');
+                if (input.Length == 2)
+                    s.EnQueue(Convert.ToInt32(input[1]));
+                else
+                    s.DeQueue();
+
+
+                n--;
+            }
+        }
+
+
+        public static void Reverse_Sentence()
+        {
+            int size = Convert.ToInt32(Console.ReadLine());
+            Stack s = new Stack();
+            while (size > 0)
+            {
+                int cnt = 0;
+                string[] input = Console.ReadLine().Trim().Split(' ');
+                for(int i =0; i<input.Length;i++)
+                {
+                    s.push(input[i]);
+                    cnt++;
+                }
+                while(cnt > 0)
+                {
+                    s.pop();
+                    cnt--;
+                }
+                Console.Write('\n');
+
+            }
+
+            
+        }
+        //static void StackCreation()
+        //{ 
+        //    int n = Convert.ToInt32(Console.ReadLine());
+        //    Stack s = new Stack();
+           
+        //    while (n > 0)
+        //    {
+        //        string[] a = Console.ReadLine().Trim().Split(' ');
+        //        if(a.Count() == 2)
+        //        {
+        //            s.push(Convert.ToInt32(a[1]));
+        //        }
+        //        else
+        //        {
+        //            s.pop();
+        //        }
+        
+                
+        //    }       
+
+        //}
         static void Quadruples_XOR()
         {
             int n = Convert.ToInt32(Console.ReadLine());
